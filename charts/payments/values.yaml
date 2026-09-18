@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: "202202854/sa-pagos"
-  tag: "0.0.0"
+  tag: "latest"
 service:
   type: ClusterIP
   port: 5002

@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: "202202854/sa-gateway"
-  tag: "0.0.0"
+  tag: "latest"
 
 service:
   type: ClusterIP

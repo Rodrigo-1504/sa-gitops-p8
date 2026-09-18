@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: "202202854/sa-gateway"
+  repository: "rodrigo150604/sa-gateway"
   tag: "latest"
 
 service:

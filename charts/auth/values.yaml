@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  repository: "202202854/sa-auth"
+  repository: "rodrigo150604/sa-auth"
   tag: "latest"
 service:
   type: ClusterIP

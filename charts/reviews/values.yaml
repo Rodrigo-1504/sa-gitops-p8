@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  repository: "202202854/sa-resenas"
+  repository: "rodrigo150604/sa-resenas"
   tag: "latest"
 service:
   type: ClusterIP

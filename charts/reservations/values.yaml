@@ -1,0 +1,28 @@
+replicaCount: 1
+image:
+  repository: "202202854/sa-reservas"
+  tag: "0.0.0"
+service:
+  type: ClusterIP
+  port: 5001
+jwtSecret: ""
+dbPassword: ""
+rabbitmqPassword: ""
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+extraEnv:
+  LOG_LEVEL: "info"
+  DB_HOST: "postgresql"
+  DB_PORT: "5432"
+  DB_NAME: "sa_platform"
+  DB_USER: "sa_user"
+  DATABASE_URL: "postgresql://sa_user:postgres@sa-release-postgresql:5432/sa_platform"
+  RABBITMQ_QUEUE_RESERVATIONS: "reservations-created"
+  RABBITMQ_HOST: "" # se sobreescribe desde el chart padre con el nombre del release
+  RABBITMQ_PORT: "5672"
+  RABBITMQ_QUEUE_RESERVACIONES: "reservas-creadas"

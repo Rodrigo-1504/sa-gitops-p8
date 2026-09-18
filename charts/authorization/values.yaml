@@ -1,0 +1,18 @@
+replicaCount: 1
+image:
+  repository: "202202854/sa-authorization"
+  tag: "0.0.0"
+service:
+  type: ClusterIP
+  port: 3002
+resources:
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+  limits:
+    cpu: "150m"
+    memory: "128Mi"
+extraEnv:
+  NODE_ENV: "development"
+  LOG_LEVEL: "info"
+  SIMULATED_FAILURE_RATE: "0"

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: authorization
+description: Microservicio de Autorizacion y Permisos
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

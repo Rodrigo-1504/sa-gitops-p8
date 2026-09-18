@@ -1,0 +1,6 @@
+apiVersion: v2
+name: gateway
+description: Subchart del microservicio gateway — sa-platform P5
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

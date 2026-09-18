@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: "202202854/sa-gateway"
+  tag: "0.0.0"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+# Va en values.secret.yaml (que está en .gitignore)
+jwtSecret: ""
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "300m"
+    memory: "256Mi"
+
+extraEnv:
+  NODE_ENV: "development"
+  LOG_LEVEL: "info"
+  AUTH_SERVICE_URL: "http://auth-service:4000"
+  AUTHORIZATION_SERVICE_URL: "http://authorization-service:4001"
+  USERS_SERVICE_URL: "http://users-service:4001"
+  RESERVATIONS_SERVICE_URL: "http://reservations-service:5001"
+  PAYMENTS_SERVICE_URL: "http://payments-service:5002"
+  REVIEWS_SERVICE_URL: "http://reviews-service:4002"

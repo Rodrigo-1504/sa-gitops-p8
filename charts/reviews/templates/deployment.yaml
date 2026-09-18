@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews
+  namespace: {{ .Release.Namespace }}
+  labels: {{- include "sa-platform.labels" . | nindent 4 }}
+spec:
+  replicas: {{ default 1 .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "sa-platform.selectorLabels" (dict "service" "reviews" "root" .) | nindent 6 }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        {{- include "sa-platform.selectorLabels" (dict "service" "reviews" "root" .) | nindent 8 }}
+      annotations:
+        checksum/config:
+          {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    spec:
+      serviceAccountName:
+        {{ include "sa-platform.serviceAccountName" (dict "service" "reviews") }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+      containers:
+        - name: reviews
+          image:
+            {{ include "sa-platform.image" (dict "image" .Values.image "root" .) }}
+          imagePullPolicy:
+            {{ .Values.image.pullPolicy | default (.Values.global.imagePullPolicy | default "IfNotPresent") }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          envFrom:
+            - configMapRef:
+                name: reviews-config
+          securityContext:
+            {{- include "sa-platform.securityContext" . | nindent 12 }}
+          resources:
+            {{- include "sa-platform.resources" .Values.resources | nindent 12 }}
+          startupProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.port }}
+            failureThreshold: 6
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

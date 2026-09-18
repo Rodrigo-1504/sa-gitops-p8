@@ -1,0 +1,23 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: prohibit-latest-tag
+spec:
+  validationFailureAction: enforce  # cambiar a "enforce" después de pruebas
+  rules:
+  - name: check-image-tag
+    match:
+      resources:
+        kinds:
+        - Pod
+        - Deployment
+        - StatefulSet
+        - DaemonSet
+        - Job
+        - CronJob
+    validate:
+      message: "La etiqueta 'latest' está prohibida. Usa una versión semántica."
+      pattern:
+        spec:
+          containers:
+          - image: "!*:latest"

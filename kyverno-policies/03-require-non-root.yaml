@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-non-root
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-run-as-non-root
+    match:
+      resources:
+        kinds:
+        - Pod
+        - Deployment
+    validate:
+      message: "runAsNonRoot debe ser true."
+      pattern:
+        spec:
+          securityContext:
+            runAsNonRoot: true

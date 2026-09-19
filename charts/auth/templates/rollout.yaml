@@ -32,7 +32,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: auth
-        image: rodrigo150604/sa-auth:latest
+        image: rodrigo150604/sa-auth:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

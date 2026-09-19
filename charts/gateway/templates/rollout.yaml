@@ -32,7 +32,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: gateway
-        image: rodrigo150604/sa-gateway:latest
+        image: rodrigo150604/sa-gateway:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

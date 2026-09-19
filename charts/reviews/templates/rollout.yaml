@@ -32,7 +32,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: reviews
-        image: rodrigo150604/sa-reviews:latest
+        image: rodrigo150604/sa-reviews:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080

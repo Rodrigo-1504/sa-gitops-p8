@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sa-reservations
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Rodrigo-1504/sa-gitops-p8
+    targetRevision: main
+    path: charts/reservations
+    helm:
+      parameters:
+        - name: "jwtSecret"
+          value: "Prod-Super-Secret-JWT-Key-SA-2026-USAC99"
+        - name: "global.imagePullPolicy"
+          value: "IfNotPresent"
+        - name: "image.tag"
+          value: "1.0.0"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sa-p8
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

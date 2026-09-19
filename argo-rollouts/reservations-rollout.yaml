@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: reservations
+  namespace: sa-p8
+spec:
+  replicas: 3
+  strategy:
+    canary:
+      steps:
+      - setWeight: 25
+      - pause:
+          duration: 2m
+      - analysis:
+          templates:
+          - templateName: smoke-tests
+      - setWeight: 50
+      - pause:
+          duration: 2m
+      - analysis:
+          templates:
+          - templateName: smoke-tests
+      - setWeight: 100
+      - pause:
+          duration: 1m
+  selector:
+    matchLabels:
+      app: reservations
+  template:
+    metadata:
+      labels:
+        app: reservations
+    spec:
+      serviceAccountName: sa-reservations
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+      - name: reservations
+        image: rodrigo150604/sa-reservations:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        env:
+        - name: PORT
+          value: "8080"

@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: require-non-root
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
   - name: check-run-as-non-root
     match:

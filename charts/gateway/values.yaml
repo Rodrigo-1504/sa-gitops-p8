@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: "rodrigo150604/sa-gateway"
-  tag: "latest"
+  tag: "fadbc75"
 
 service:
   type: ClusterIP

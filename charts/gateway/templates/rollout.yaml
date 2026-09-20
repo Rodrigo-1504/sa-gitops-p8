@@ -4,7 +4,7 @@ metadata:
   name: gateway
   namespace: sa-p8
 spec:
-  replicas: 3
+  replicas: {{ .Values.replicaCount }}
   strategy:
     canary:
       steps:

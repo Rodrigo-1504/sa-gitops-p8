@@ -1,5 +1,8 @@
 replicaCount: 1
 image:
+  repository: "rodrigo150604"
+  name: "sa-sa-authorization"
+  tag: "v1.0.0"
   repository: "rodrigo150604/sa-authorization"
   tag: "v1.0.0"
 service:

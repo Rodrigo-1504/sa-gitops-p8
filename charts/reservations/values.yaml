@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: "rodrigo150604/sa-reservas"
-  tag: "v1.0.0"
+  tag: "0.0.0"
 service:
   type: ClusterIP
   port: 5001

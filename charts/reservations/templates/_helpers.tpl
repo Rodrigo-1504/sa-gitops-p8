@@ -66,7 +66,7 @@ app: {{ .service | quote }}
      ═══════════════════════════════════════════════════════════════ */}}
 {{- define "sa-platform.image" -}}
 {{- $repo := required "image.repository es requerido para cada microservicio" .image.repository -}}
-{{- $tag  := default "latest" .image.tag -}}
+{{- $tag  := default "v1.0.0" .image.tag -}}
 {{- printf "%s:%s" $repo $tag -}}
 {{- end }}
 

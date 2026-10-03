@@ -13,8 +13,6 @@ spec:
     path: charts/auth
     helm:
       parameters:
-        - name: "jwtSecret"
-          value: "Prod-Super-Secret-JWT-Key-SA-2026-USAC99"
         - name: "global.imagePullPolicy"
           value: "IfNotPresent"
         - name: "image.tag"

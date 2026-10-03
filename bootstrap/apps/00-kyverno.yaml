@@ -15,13 +15,13 @@ spec:
       valuesObject:
         admissionController:
           replicas: 1
-        reportsController: { enabled: false }
-        backgroundController: { enabled: false }
-        cleanupController: { enabled: false }
+        reportsController: {enabled: false}
+        backgroundController: {enabled: false}
+        cleanupController: {enabled: false}
   destination:
     server: https://kubernetes.default.svc
     namespace: kyverno
   syncPolicy:
-    automated: { prune: true, selfHeal: true }
+    automated: {prune: true, selfHeal: true}
     syncOptions: [CreateNamespace=true, ServerSideApply=true]
-    retry: { limit: 5, backoff: { duration: 10s, factor: 2, maxDuration: 3m } }
+    retry: {limit: 5, backoff: {duration: 10s, factor: 2, maxDuration: 3m}}

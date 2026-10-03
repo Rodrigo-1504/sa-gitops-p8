@@ -1,0 +1,4 @@
+apiVersion: v2
+name: postgres
+description: Postgres con volumen persistente (servicio con estado de P9)
+version: 0.1.0

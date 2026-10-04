@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init
+  namespace: sa-p8
+data:
+  init.sql: |
+    CREATE DATABASE usuarios_db;
+    CREATE DATABASE reservas_db;
+    CREATE DATABASE pagos_db;
+    CREATE DATABASE resenas_db;

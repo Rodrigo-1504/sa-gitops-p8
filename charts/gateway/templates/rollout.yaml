@@ -8,13 +8,13 @@ spec:
   strategy:
     canary:
       steps:
-      - setWeight: 25
-      - pause:
-          duration: 1m
-      - setWeight: 50
-      - pause:
-          duration: 1m
-      - setWeight: 100
+        - setWeight: 25
+        - pause:
+            duration: 1m
+        - setWeight: 50
+        - pause:
+            duration: 1m
+        - setWeight: 100
   selector:
     matchLabels:
       app: gateway
@@ -31,35 +31,44 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-      - name: gateway
-        image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8080
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 15
-          periodSeconds: 20
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 250m
-            memory: 256Mi
-        env:
-        - name: PORT
-          value: "8080"
+        - name: gateway
+          image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          env:
+            - name: PORT
+              value: "8080"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: gateway
+                topologyKey: kubernetes.io/hostname

@@ -8,13 +8,13 @@ spec:
   strategy:
     canary:
       steps:
-      - setWeight: 25
-      - pause:
-          duration: 1m
-      - setWeight: 50
-      - pause:
-          duration: 1m
-      - setWeight: 100
+        - setWeight: 25
+        - pause:
+            duration: 1m
+        - setWeight: 50
+        - pause:
+            duration: 1m
+        - setWeight: 100
   selector:
     matchLabels:
       app: reviews
@@ -31,47 +31,56 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-      - name: reviews
-        image: rodrigo150604/sa-reviews:v1.0.0
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8080
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 15
-          periodSeconds: 20
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 250m
-            memory: 256Mi
-        env:
-        - name: PORT
-          value: "8080"
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: db-credentials
-              key: username
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-credentials
-              key: DB_PASSWORD
-        - name: DATABASE_URL
-          value: "postgres://$(DB_USER):$(DB_PASSWORD)@postgres:5432/resenas_db"
+        - name: reviews
+          image: rodrigo150604/sa-reviews:v1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          env:
+            - name: PORT
+              value: "8080"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PASSWORD
+            - name: DATABASE_URL
+              value: "postgres://$(DB_USER):$(DB_PASSWORD)@postgres:5432/resenas_db"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: reviews
+                topologyKey: kubernetes.io/hostname

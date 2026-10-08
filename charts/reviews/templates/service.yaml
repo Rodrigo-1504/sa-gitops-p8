@@ -8,7 +8,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    {{- include "sa-platform.selectorLabels" (dict "service" "reviews" "root" .) | nindent 4 }}
+    app: reviews
   ports:
     - name: http
       port: {{ .Values.service.port }}

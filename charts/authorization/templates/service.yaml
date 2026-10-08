@@ -6,7 +6,7 @@ metadata:
   labels: {{- include "sa-platform.labels" . | nindent 4 }}
 spec:
   type: ClusterIP
-  selector: {{- include "sa-platform.selectorLabels" (dict "service" "authorization" "root" .) | nindent 4 }}
+  selector:
     app: authorization
   ports:
     - name: http

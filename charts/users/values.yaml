@@ -3,7 +3,7 @@ replicaCount: 3
 image:
   repository: "rodrigo150604"
   name: "sa-users"
-  tag: "v1.0.0"
+  tag: "16c6832"
 
 service:
   type: ClusterIP

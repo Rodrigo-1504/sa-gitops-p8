@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sa-observability-jaeger
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://jaegertracing.github.io/helm-charts
+    chart: jaeger
+    targetRevision: 3.4.1
+    helm:
+      values: |
+        provisionDataStore:
+          cassandra: false
+          elasticsearch: false
+        allInOne:
+          enabled: true
+          resources:
+            requests: {cpu: 50m, memory: 128Mi}
+        storage:
+          type: memory
+        collector: {enabled: false}
+        query: {enabled: false}
+        agent: {enabled: false}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sa-p8
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
